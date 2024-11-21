@@ -117,6 +117,22 @@ const authStore = useAuthStore();
 </script>
 ```
 
+### 6. Foto pofile
+untuk menampilkan profile pengguna ditambahkan kode berikut pada `ProfilePage.vue`
+
+```vue
+<div id="avatar-container">
+    <ion-avatar>
+        <img 
+            alt="Avatar" 
+            :src="userPhoto" 
+            @error="handleImageError"
+            @load="() => console.log('Image loaded successfully', userPhoto)"
+        />
+    </ion-avatar>
+</div>
+```
+
 ### Alur
 1. Login <br>
 Pengguna ➡️ Klik "Sign In with Google" ➡️ Google Sign-In ➡️ Firebase Authentication ➡️ Data disimpan di store.<br>
