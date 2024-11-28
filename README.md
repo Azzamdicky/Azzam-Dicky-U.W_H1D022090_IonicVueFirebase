@@ -1,3 +1,122 @@
+# Tugas 10 Pertemuan 11
+IONIC Vue
+
+Nama: Azzam Dicky Umar Widadi 
+NIM: H1D022090  
+Shift KRS: D
+Shift Baru: F
+
+## Screenshot
+#### Create
+<img src="createtgs11.png" width=500px>
+
+#### Read
+<img src="readstlhcreate.png" width=500px>
+
+#### Update
+<img src="edittgs11.png" width=500px>
+<img src="readstlhedit.png" width=500px>
+
+#### Delete
+<img src="deletetgs11.png" width=500px>
+<img src="readstlhdelete.png" width=500px>
+
+## Penjelasan Program
+### 1. Create
+Fungsi `addTodo` menerima data `Todo` tanpa `id`, lalu menambahkan data ini ke koleksi Firestore menggunakan `addDoc`.<br>
+Proses : <br>
+    - Pengguna memasukkan data seperti `title` dan `description` melalui form atau modal.<br>
+    - Validasi data, Periksa apakah data yang dimasukkan lengkap (tidak kosong).<br>
+    - Buat objek yang berisi informasi `title`, `description`, serta tambahkan status default (`false`) dan timestamp (`createdAt`, `updatedAt`).<br>
+    - Gunakan fungsi `addDoc` untuk menambahkan data ke koleksi Firestore.<br>
+    - Notifikasi berhasil muncul<br>
+
+```typescript
+async addTodo(todo: Omit<Todo, 'id'>) {
+        try {
+            const todoRef = this.getTodoRef();
+            const docRef = await addDoc(todoRef, {
+                ...todo,
+                status: false,
+                createdAt: Timestamp.now(),
+                updatedAt: Timestamp.now()
+            });
+            return docRef.id;
+        } catch (error) {
+            console.error('Error Tambah Todo:', error);
+            throw error;
+        }
+    },
+```
+
+### 2. Read
+Fungsi `getTodos` mengambil semua data dari koleksi menggunakan `getDocs`, kemudian mengubahnya menjadi array objek.<br>
+Proses : <br>
+    - Gunakan fungsi `getTodoRef` untuk mendapatkan referensi ke koleksi pengguna.<br>
+    - Urutkan data berdasarkan `updatedAt` agar yang terbaru muncul di awal.<br>
+    - Gunakan `getDocs` untuk mengambil semua dokumen yang sesuai dengan query.<br>
+    - Data tampil di halaman.<br>
+
+```typescript
+async getTodos(): Promise<Todo[]> {
+        try {
+            const todoRef = this.getTodoRef();
+            const q = query(todoRef, orderBy('updatedAt', 'desc'));
+            const snapshot = await getDocs(q);
+            return snapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data()
+            } as Todo));
+        } catch (error) {
+            console.error('Error Get Todos:', error);
+            throw error;
+        }
+    },
+```
+
+### 3. Update
+Fungsi `updateTodo` memperbarui data dokumen tertentu berdasarkan `id` menggunakan `updateDoc`.<br>
+Proses : <br>
+    - Pengguna memilih item tertentu dan klik icon edit.<br>
+    - Form akan berisi dengan data lama(sudah ada).<br>
+    - Perubahan dikirim ke firestore, `updateDoc` untuk memperbarui dokumen berdasarkan `id`.<br>
+    - Notifikasi keberhasilan muncul<br>
+
+```typescript
+async updateTodo(id: string, todo: Partial<Todo>) {
+        try {
+            const todoRef = this.getTodoRef();
+            const docRef = doc(todoRef, id);
+            await updateDoc(docRef, {
+                ...todo,
+                updatedAt: Timestamp.now()
+            });
+        } catch (error) {
+            console.error('Error Update Todo:', error);
+            throw error;
+        }
+    },
+```
+
+### 4. Delete
+Fungsi `deleteTodo` menghapus dokumen berdasarkan `id` menggunakan `deleteDoc`.<br>
+Proses : <br>
+    - Pengguna memilih item yang akan dihapus, melalui tombol delete.<br>
+    - Mengirim perintah ke firestore dengan `deleteDoc` untuk menghapus dokumen berdasarkan `id`.<br>
+    - Notifikasi keberhasilan muncul<br>
+
+```typescript
+async deleteTodo(id: string) {
+        try {
+            const todoRef = this.getTodoRef();
+            const docRef = doc(todoRef, id);
+            await deleteDoc(docRef);
+        } catch (error) {
+            console.error('Error Delete Todo:', error);
+            throw error;
+        }
+    },
+```
 # Tugas Pertemuan 10
 IONIC
 
