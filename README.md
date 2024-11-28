@@ -117,6 +117,21 @@ async deleteTodo(id: string) {
         }
     },
 ```
+
+#### Cara Build APK
+1. npm install -g @ionic/cli
+2. npm install @capacitor/core @capacitor/cli
+3. npx cap add android
+4. ionic build --prod
+5. npx cap copy
+6. npx cap sync
+7. npx cap open android
+
+kemudian akan menginstall gradle, tunggu hingga selesai kemudian pilih menu Build > Build Bundle(s)/APK(s) > Build APK(s).<br>
+setelah itu, pilih locate dan copy file app-debug.apk kirim ke ponsel untuk diinstall
+
+<img src="prakmobiless.jpg" width=500px>
+
 # Tugas Pertemuan 10
 IONIC
 
